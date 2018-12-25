@@ -776,7 +776,7 @@ def load_src_trgs_pairs(source_json_path, dataset_name, src_fields, trg_fields, 
     tokenized_pairs_cache_path = source_json_path + '_tokenized.tmp'
     if os.path.exists(tokenized_pairs_cache_path):
         print('Loading tokenized_pairs from ' + tokenized_pairs_cache_path)
-        with open(tokenized_pairs_cache_path, 'rb', encoding="utf-8") as cache_file:
+        with open(tokenized_pairs_cache_path, 'rb') as cache_file:
             tokenized_pairs = pickle.load(cache_file)
     else:
         print('Generating tokenized_pairs and dumping to ' + tokenized_pairs_cache_path)

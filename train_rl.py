@@ -140,7 +140,7 @@ def train_model(model, optimizer, criterion, train_data_loader, valid_data_loade
         logging.info('Loading training state from: %s' % state_path)
         if os.path.exists(state_path):
             (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_history_losses, valid_history_losses,
-                        test_history_losses) = torch.load(open(state_path, 'rb', encoding="utf-8"))
+                        test_history_losses) = torch.load(open(state_path, 'rb'))
             opt.start_epoch = epoch
 
     for epoch in range(opt.start_epoch , opt.epochs):
@@ -475,10 +475,10 @@ def init_model(opt):
     if opt.train_from:
         logging.info("loading previous checkpoint from %s" % opt.train_from)
         if torch.cuda.is_available():
-            checkpoint = torch.load(open(opt.train_from, 'rb', encoding="utf-8"))
+            checkpoint = torch.load(open(opt.train_from, 'rb'))
         else:
             checkpoint = torch.load(
-                open(opt.train_from, 'rb', encoding="utf-8"), map_location=lambda storage, loc: storage
+                open(opt.train_from, 'rb'), map_location=lambda storage, loc: storage
             )
         print(checkpoint.keys())
         # some compatible problems, keys are started with 'module.'
