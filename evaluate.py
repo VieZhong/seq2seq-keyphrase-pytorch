@@ -104,8 +104,8 @@ def if_present_phrase(src_str_tokens, phrase_str_tokens):
     :return:
     """
     match_pos_idx = -1
+    match_flag = True
     for src_start_idx in range(len(src_str_tokens) - len(phrase_str_tokens) + 1):
-        match_flag = True
         # iterate each word in target, if one word does not match, set match=False and break
         for seq_idx, seq_w in enumerate(phrase_str_tokens):
             src_w = src_str_tokens[src_start_idx + seq_idx]
