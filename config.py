@@ -239,7 +239,7 @@ def preprocess_opts(parser):
     parser.add_argument('-words_min_frequency', type=int, default=0)
 
     # Length filter options
-    parser.add_argument('-max_src_seq_length', type=int, default=300,
+    parser.add_argument('-max_src_seq_length', type=int, default=400,
                         help="Maximum source sequence length")
     parser.add_argument('-min_src_seq_length', type=int, default=20,
                         help="Minimum source sequence length")
