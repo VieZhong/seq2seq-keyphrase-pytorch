@@ -243,7 +243,7 @@ def preprocess_opts(parser):
                         help="Maximum source sequence length")
     parser.add_argument('-min_src_seq_length', type=int, default=20,
                         help="Minimum source sequence length")
-    parser.add_argument('-max_trg_seq_length', type=int, default=6,
+    parser.add_argument('-max_trg_seq_length', type=int, default=8,
                         help="Maximum target sequence length to keep.")
     parser.add_argument('-min_trg_seq_length', type=int, default=None,
                         help="Minimun target sequence length to keep.")
