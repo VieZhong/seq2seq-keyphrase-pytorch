@@ -33,7 +33,7 @@ from pykp.io import KeyphraseDataset
 from pykp.model import Seq2SeqLSTMAttention, Seq2SeqLSTMAttentionCopy
 
 import time
-
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 def time_usage(func):
     # argnames = func.func_code.co_varnames[:func.func_code.co_argcount]
     fname = func.__name__

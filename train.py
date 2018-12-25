@@ -25,6 +25,7 @@ from pykp.model import Seq2SeqLSTMAttention, Seq2SeqLSTMAttentionCascading
 
 import time
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
