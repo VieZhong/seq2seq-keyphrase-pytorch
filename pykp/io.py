@@ -776,7 +776,7 @@ def load_src_trgs_pairs(source_json_path, dataset_name, src_fields, trg_fields, 
     tokenized_pairs_cache_path = source_json_path + '_tokenized.tmp'
     if os.path.exists(tokenized_pairs_cache_path):
         print('Loading tokenized_pairs from ' + tokenized_pairs_cache_path)
-        with open(tokenized_pairs_cache_path, 'rb') as cache_file:
+        with open(tokenized_pairs_cache_path, 'rb', encoding="utf-8") as cache_file:
             tokenized_pairs = pickle.load(cache_file)
     else:
         print('Generating tokenized_pairs and dumping to ' + tokenized_pairs_cache_path)
@@ -792,7 +792,7 @@ def load_src_trgs_pairs(source_json_path, dataset_name, src_fields, trg_fields, 
                                                valid_check=valid_check)
         del src_trgs_pairs
 
-        with open(tokenized_pairs_cache_path, 'wb') as cache_file:
+        with open(tokenized_pairs_cache_path, 'wb', encoding="utf-8") as cache_file:
             pickle.dump(tokenized_pairs, cache_file)
 
     return tokenized_pairs
@@ -846,14 +846,14 @@ def process_and_export_dataset(tokenized_src_trg_pairs,
         tokenized_src_trg_pairs, word2id, id2word, opt, mode='one2one', include_original=include_original)
     print('#pairs of %s %s one2one  = %d' % (dataset_name, data_type, len(one2one_examples)))
     print("Dumping one2one %s %s to disk: %s" % (dataset_name, data_type, os.path.join(output_path, '%s.%s.one2one.pt' % (dataset_name, data_type))))
-    torch.save(one2one_examples, open(os.path.join(output_path, '%s.%s.one2one.pt' % (dataset_name, data_type)), 'wb'))
+    torch.save(one2one_examples, open(os.path.join(output_path, '%s.%s.one2one.pt' % (dataset_name, data_type)), 'wb', encoding="utf-8"))
     del one2one_examples
 
     one2many_exmaples = process_data_examples(
         tokenized_src_trg_pairs, word2id, id2word, opt, mode='one2many', include_original=include_original)
     print('#pairs of %s %s one2many = %d' % (dataset_name, data_type, len(one2many_exmaples)))
     print("Dumping one2many %s %s to disk: %s" % (dataset_name, data_type, os.path.join(output_path, '%s.%s.one2many.pt' % (dataset_name, data_type))))
-    torch.save(one2many_exmaples, open(os.path.join(output_path, '%s.%s.one2many.pt' % (dataset_name, data_type)), 'wb'))
+    torch.save(one2many_exmaples, open(os.path.join(output_path, '%s.%s.one2many.pt' % (dataset_name, data_type)), 'wb', encoding="utf-8"))
     del one2many_exmaples
 
     print("Dumping done!")

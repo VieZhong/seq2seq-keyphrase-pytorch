@@ -306,9 +306,9 @@ def evaluate_beam_search(generator, data_loader, opt, title='', epoch=1, predict
             if predict_save_path:
                 if not os.path.exists(os.path.join(predict_save_path, title + '_detail')):
                     os.makedirs(os.path.join(predict_save_path, title + '_detail'))
-                with open(os.path.join(predict_save_path, title + '_detail', str(example_idx) + '_print.txt'), 'w') as f_:
+                with open(os.path.join(predict_save_path, title + '_detail', str(example_idx) + '_print.txt'), 'w', encoding="utf-8") as f_:
                     f_.write(print_out)
-                with open(os.path.join(predict_save_path, title + '_detail', str(example_idx) + '_prediction.txt'), 'w') as f_:
+                with open(os.path.join(predict_save_path, title + '_detail', str(example_idx) + '_prediction.txt'), 'w', encoding="utf-8") as f_:
                     f_.write(preds_out)
 
                 out_dict = {}
@@ -331,7 +331,7 @@ def evaluate_beam_search(generator, data_loader, opt, title='', epoch=1, predict
                 assert len(out_dict['pred_str']) == len(out_dict['present_flag']) \
                        == len(out_dict['valid_flag']) == len(out_dict['match_flag']) == len(out_dict['pred_score'])
 
-                with open(os.path.join(predict_save_path, title + '_detail', str(example_idx) + '.json'), 'w') as f_:
+                with open(os.path.join(predict_save_path, title + '_detail', str(example_idx) + '.json'), 'w', encoding="utf-8") as f_:
                     f_.write(json.dumps(out_dict))
 
             progbar.update(epoch, example_idx, [('f_score@5_exact', np.average(score_dict['f_score@5_exact'])),
@@ -348,7 +348,7 @@ def evaluate_beam_search(generator, data_loader, opt, title='', epoch=1, predict
 
     if predict_save_path:
         # export scores. Each row is scores (precision, recall and f-score) of different way of filtering predictions (how many one-word predictions to keep)
-        with open(predict_save_path + os.path.sep + title + '_result.csv', 'w') as result_csv:
+        with open(predict_save_path + os.path.sep + title + '_result.csv', 'w', encoding="utf-8") as result_csv:
             csv_lines = []
             for mode in ["exact", "soft"]:
                 for topk in topk_range:

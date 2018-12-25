@@ -447,7 +447,7 @@ def train_model(model, optimizer_ml, optimizer_rl, criterion, train_data_loader,
         logging.info('Loading training state from: %s' % state_path)
         if os.path.exists(state_path):
             (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_ml_history_losses, train_rl_history_losses, valid_history_losses,
-             test_history_losses) = torch.load(open(state_path, 'rb'))
+             test_history_losses) = torch.load(open(state_path, 'rb', encoding="utf-8"))
             opt.start_epoch = epoch
 
     for epoch in range(opt.start_epoch, opt.epochs):
@@ -555,11 +555,11 @@ def train_model(model, optimizer_ml, optimizer_rl, criterion, train_data_loader,
                     logging.info('Saving checkpoint to: %s' % os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d.error=%f' % (opt.exp, epoch, batch_i, total_batch, valid_loss) + '.model'))
                     torch.save(
                         model.state_dict(),
-                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb')
+                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb', encoding="utf-8")
                     )
                     torch.save(
                         (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_ml_history_losses, train_rl_history_losses, valid_history_losses, test_history_losses),
-                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb')
+                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb', encoding="utf-8")
                     )
 
                 if stop_increasing >= opt.early_stop_tolerance:
@@ -701,10 +701,10 @@ def init_model(opt):
         # )
 
         if torch.cuda.is_available():
-            checkpoint = torch.load(open(opt.train_from, 'rb'))
+            checkpoint = torch.load(open(opt.train_from, 'rb', encoding="utf-8"))
         else:
             checkpoint = torch.load(
-                open(opt.train_from, 'rb'), map_location=lambda storage, loc: storage
+                open(opt.train_from, 'rb', encoding="utf-8"), map_location=lambda storage, loc: storage
             )
         # some compatible problems, keys are started with 'module.'
         # checkpoint = dict([(k[7:], v) if k.startswith('module.') else (k, v) for k, v in checkpoint.items()])
@@ -713,7 +713,7 @@ def init_model(opt):
         # dump the meta-model
         torch.save(
             model.state_dict(),
-            open(os.path.join(opt.train_from[: opt.train_from.find('.epoch=')], 'initial.model'), 'wb')
+            open(os.path.join(opt.train_from[: opt.train_from.find('.epoch=')], 'initial.model'), 'wb', encoding="utf-8")
         )
 
     utils.tally_parameters(model)
