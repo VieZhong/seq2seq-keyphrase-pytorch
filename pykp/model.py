@@ -88,6 +88,7 @@ class Attention(nn.Module):
 
         if self.method == 'general':
             self.attn = nn.Linear(enc_dim, trg_dim)
+            self.attn.cuda()
         elif self.method == 'concat':
             attn = nn.Linear(enc_dim + trg_dim, trg_dim)
             v = nn.Linear(trg_dim, 1)
