@@ -278,7 +278,6 @@ class Seq2SeqLSTMAttention(nn.Module):
             self.emb_dim,
             self.pad_token_src
         )
-
         self.embedding.cuda()
 
         self.encoder = nn.LSTM(
@@ -289,6 +288,7 @@ class Seq2SeqLSTMAttention(nn.Module):
             batch_first=True,
             dropout=self.dropout
         )
+        self.encoder.cuda()
 
         self.decoder = nn.LSTM(
             input_size=self.emb_dim,
