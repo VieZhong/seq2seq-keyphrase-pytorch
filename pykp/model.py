@@ -277,7 +277,9 @@ class Seq2SeqLSTMAttention(nn.Module):
             self.vocab_size,
             self.emb_dim,
             self.pad_token_src
-        ).cpu()
+        )
+
+        self.embedding.cuda()
 
         self.encoder = nn.LSTM(
             input_size=self.emb_dim,
