@@ -413,7 +413,7 @@ class Seq2SeqLSTMAttention(nn.Module):
         self.h0_encoder, self.c0_encoder = self.init_encoder_state(input_src)  # (self.encoder.num_layers * self.num_directions, batch_size, self.src_hidden_dim)
 
         # input (batch_size, src_len), src_emb (batch_size, src_len, emb_dim)
-        src_emb = self.embedding(input_src).cpu()
+        src_emb = self.embedding(input_src).cuda()
         src_emb = nn.utils.rnn.pack_padded_sequence(src_emb, input_src_len, batch_first=True)
 
         # src_h (batch_size, seq_len, hidden_size * num_directions): outputs (h_t) of all the time steps
