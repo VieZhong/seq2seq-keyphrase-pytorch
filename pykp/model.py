@@ -352,6 +352,7 @@ class Seq2SeqLSTMAttention(nn.Module):
             self.dec_input_bridge = None
         else:
             self.dec_input_bridge = nn.Linear(self.dec_input_dim, self.emb_dim)
+            self.dec_input_bridge.cuda()
 
         self.init_weights()
 
@@ -468,6 +469,7 @@ class Seq2SeqLSTMAttention(nn.Module):
 
         if self.dec_input_bridge:
             dec_input = nn.Tanh()(self.dec_input_bridge(inputs))
+            dec_input.cuda()
         else:
             dec_input = trg_emb
 
