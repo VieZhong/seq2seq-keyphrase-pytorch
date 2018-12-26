@@ -486,87 +486,87 @@ def train_model(model, optimizer_ml, optimizer_rl, criterion, train_data_loader,
             progbar.update(epoch, batch_i, report_loss)
 
             # Validate and save checkpoint
-            if (opt.run_valid_every == -1 and batch_i == len(train_data_loader) - 1) or\
-               (opt.run_valid_every > -1 and total_batch > 1 and total_batch % opt.run_valid_every == 0):
-                logging.info('*' * 50)
-                logging.info('Run validing and testing @Epoch=%d,#(Total batch)=%d' % (epoch, total_batch))
-                # valid_losses    = _valid_error(valid_data_loader, model, criterion, epoch, opt)
-                # valid_history_losses.append(valid_losses)
-                valid_score_dict = evaluate_beam_search(generator, valid_data_loader, opt, title='Validating, epoch=%d, batch=%d, total_batch=%d' % (epoch, batch_i, total_batch), epoch=epoch, predict_save_path=opt.pred_path + '/epoch%d_batch%d_total_batch%d' % (epoch, batch_i, total_batch))
-                test_score_dict = evaluate_beam_search(generator, test_data_loader, opt, title='Testing, epoch=%d, batch=%d, total_batch=%d' % (epoch, batch_i, total_batch), epoch=epoch, predict_save_path=opt.pred_path + '/epoch%d_batch%d_total_batch%d' % (epoch, batch_i, total_batch))
+            # if (opt.run_valid_every == -1 and batch_i == len(train_data_loader) - 1) or\
+            #    (opt.run_valid_every > -1 and total_batch > 1 and total_batch % opt.run_valid_every == 0):
+            #     logging.info('*' * 50)
+            #     logging.info('Run validing and testing @Epoch=%d,#(Total batch)=%d' % (epoch, total_batch))
+            #     # valid_losses    = _valid_error(valid_data_loader, model, criterion, epoch, opt)
+            #     # valid_history_losses.append(valid_losses)
+            #     valid_score_dict = evaluate_beam_search(generator, valid_data_loader, opt, title='Validating, epoch=%d, batch=%d, total_batch=%d' % (epoch, batch_i, total_batch), epoch=epoch, predict_save_path=opt.pred_path + '/epoch%d_batch%d_total_batch%d' % (epoch, batch_i, total_batch))
+            #     test_score_dict = evaluate_beam_search(generator, test_data_loader, opt, title='Testing, epoch=%d, batch=%d, total_batch=%d' % (epoch, batch_i, total_batch), epoch=epoch, predict_save_path=opt.pred_path + '/epoch%d_batch%d_total_batch%d' % (epoch, batch_i, total_batch))
 
-                checkpoint_names.append('epoch=%d-batch=%d-total_batch=%d' % (epoch, batch_i, total_batch))
+            #     checkpoint_names.append('epoch=%d-batch=%d-total_batch=%d' % (epoch, batch_i, total_batch))
 
-                curve_names = []
-                scores = []
-                if opt.train_ml:
-                    train_ml_history_losses.append(copy.copy(train_ml_losses))
-                    scores += [train_ml_history_losses]
-                    curve_names += ['Training ML Error']
-                    train_ml_losses = []
+            #     curve_names = []
+            #     scores = []
+            #     if opt.train_ml:
+            #         train_ml_history_losses.append(copy.copy(train_ml_losses))
+            #         scores += [train_ml_history_losses]
+            #         curve_names += ['Training ML Error']
+            #         train_ml_losses = []
 
-                if opt.train_rl:
-                    train_rl_history_losses.append(copy.copy(train_rl_losses))
-                    scores += [train_rl_history_losses]
-                    curve_names += ['Training RL Reward']
-                    train_rl_losses = []
+            #     if opt.train_rl:
+            #         train_rl_history_losses.append(copy.copy(train_rl_losses))
+            #         scores += [train_rl_history_losses]
+            #         curve_names += ['Training RL Reward']
+            #         train_rl_losses = []
 
-                valid_history_losses.append(valid_score_dict)
-                test_history_losses.append(test_score_dict)
+            #     valid_history_losses.append(valid_score_dict)
+            #     test_history_losses.append(test_score_dict)
 
-                scores += [[result_dict[name] for result_dict in valid_history_losses] for name in opt.report_score_names]
-                curve_names += ['Valid-' + name for name in opt.report_score_names]
-                scores += [[result_dict[name] for result_dict in test_history_losses] for name in opt.report_score_names]
-                curve_names += ['Test-' + name for name in opt.report_score_names]
+            #     scores += [[result_dict[name] for result_dict in valid_history_losses] for name in opt.report_score_names]
+            #     curve_names += ['Valid-' + name for name in opt.report_score_names]
+            #     scores += [[result_dict[name] for result_dict in test_history_losses] for name in opt.report_score_names]
+            #     curve_names += ['Test-' + name for name in opt.report_score_names]
 
-                scores = [np.asarray(s) for s in scores]
-                # Plot the learning curve
-                plot_learning_curve_and_write_csv(scores=scores,
-                                                  curve_names=curve_names,
-                                                  checkpoint_names=checkpoint_names,
-                                                  title='Training Validation & Test',
-                                                  save_path=opt.exp_path + '/[epoch=%d,batch=%d,total_batch=%d]train_valid_test_curve.png' % (epoch, batch_i, total_batch))
+            #     scores = [np.asarray(s) for s in scores]
+            #     # Plot the learning curve
+            #     plot_learning_curve_and_write_csv(scores=scores,
+            #                                       curve_names=curve_names,
+            #                                       checkpoint_names=checkpoint_names,
+            #                                       title='Training Validation & Test',
+            #                                       save_path=opt.exp_path + '/[epoch=%d,batch=%d,total_batch=%d]train_valid_test_curve.png' % (epoch, batch_i, total_batch))
 
-                '''
-                determine if early stop training (whether f-score increased, before is if valid error decreased)
-                '''
-                valid_loss = np.average(valid_history_losses[-1][opt.report_score_names[0]])
-                is_best_loss = valid_loss > best_loss
-                rate_of_change = float(valid_loss - best_loss) / float(best_loss) if float(best_loss) > 0 else 0.0
+            #     '''
+            #     determine if early stop training (whether f-score increased, before is if valid error decreased)
+            #     '''
+            #     valid_loss = np.average(valid_history_losses[-1][opt.report_score_names[0]])
+            #     is_best_loss = valid_loss > best_loss
+            #     rate_of_change = float(valid_loss - best_loss) / float(best_loss) if float(best_loss) > 0 else 0.0
 
-                # valid error doesn't increase
-                if rate_of_change <= 0:
-                    stop_increasing += 1
-                else:
-                    stop_increasing = 0
+            #     # valid error doesn't increase
+            #     if rate_of_change <= 0:
+            #         stop_increasing += 1
+            #     else:
+            #         stop_increasing = 0
 
-                if is_best_loss:
-                    logging.info('Validation: update best loss (%.4f --> %.4f), rate of change (ROC)=%.2f' % (
-                        best_loss, valid_loss, rate_of_change * 100))
-                else:
-                    logging.info('Validation: best loss is not updated for %d times (%.4f --> %.4f), rate of change (ROC)=%.2f' % (
-                        stop_increasing, best_loss, valid_loss, rate_of_change * 100))
+            #     if is_best_loss:
+            #         logging.info('Validation: update best loss (%.4f --> %.4f), rate of change (ROC)=%.2f' % (
+            #             best_loss, valid_loss, rate_of_change * 100))
+            #     else:
+            #         logging.info('Validation: best loss is not updated for %d times (%.4f --> %.4f), rate of change (ROC)=%.2f' % (
+            #             stop_increasing, best_loss, valid_loss, rate_of_change * 100))
 
-                best_loss = max(valid_loss, best_loss)
+            #     best_loss = max(valid_loss, best_loss)
 
-                # only store the checkpoints that make better validation performances
-                if total_batch > 1 and (total_batch % opt.save_model_every == 0 or is_best_loss):  # epoch >= opt.start_checkpoint_at and
-                    # Save the checkpoint
-                    logging.info('Saving checkpoint to: %s' % os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d.error=%f' % (opt.exp, epoch, batch_i, total_batch, valid_loss) + '.model'))
-                    torch.save(
-                        model.state_dict(),
-                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb')
-                    )
-                    torch.save(
-                        (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_ml_history_losses, train_rl_history_losses, valid_history_losses, test_history_losses),
-                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb')
-                    )
+            #     # only store the checkpoints that make better validation performances
+            #     if total_batch > 1 and (total_batch % opt.save_model_every == 0 or is_best_loss):  # epoch >= opt.start_checkpoint_at and
+            #         # Save the checkpoint
+            #         logging.info('Saving checkpoint to: %s' % os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d.error=%f' % (opt.exp, epoch, batch_i, total_batch, valid_loss) + '.model'))
+            #         torch.save(
+            #             model.state_dict(),
+            #             open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb')
+            #         )
+            #         torch.save(
+            #             (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_ml_history_losses, train_rl_history_losses, valid_history_losses, test_history_losses),
+            #             open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb')
+            #         )
 
-                if stop_increasing >= opt.early_stop_tolerance:
-                    logging.info('Have not increased for %d epoches, early stop training' % stop_increasing)
-                    early_stop_flag = True
-                    break
-                logging.info('*' * 50)
+            #     if stop_increasing >= opt.early_stop_tolerance:
+            #         logging.info('Have not increased for %d epoches, early stop training' % stop_increasing)
+            #         early_stop_flag = True
+            #         break
+            #     logging.info('*' * 50)
 
 
 def load_data_vocab(opt, load_train=True):
