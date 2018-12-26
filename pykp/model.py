@@ -298,6 +298,7 @@ class Seq2SeqLSTMAttention(nn.Module):
             batch_first=False,
             dropout=self.dropout
         )
+        self.decoder.cuda()
 
         self.attention_layer = Attention(self.src_hidden_dim * self.num_directions, self.trg_hidden_dim, method=self.attention_mode)
 
@@ -305,13 +306,16 @@ class Seq2SeqLSTMAttention(nn.Module):
             self.src_hidden_dim * self.num_directions,
             self.trg_hidden_dim
         )
+        self.encoder2decoder_hidden.cuda()
 
         self.encoder2decoder_cell = nn.Linear(
             self.src_hidden_dim * self.num_directions,
             self.trg_hidden_dim
         )
+        self.encoder2decoder_cell.cuda()
 
         self.decoder2vocab = nn.Linear(self.trg_hidden_dim, self.vocab_size)
+        self.decoder2vocab.cuda()
 
         # copy attention
         if self.copy_attention:
@@ -382,7 +386,7 @@ class Seq2SeqLSTMAttention(nn.Module):
         decoder_init_hidden.cuda()
         decoder_init_cell = nn.Tanh()(self.encoder2decoder_cell(enc_c)).unsqueeze(0)
         decoder_init_cell.cuda()
-        
+
         return decoder_init_hidden, decoder_init_cell
 
     def forward(self, input_src, input_src_len, input_trg, input_src_ext, oov_lists, trg_mask=None, ctx_mask=None):
