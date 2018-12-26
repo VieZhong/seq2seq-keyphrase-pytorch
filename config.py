@@ -68,7 +68,7 @@ def init_opt(description):
     if opt.train_from:
         train_from_model_dir = opt.train_from[:opt.train_from.rfind('model/') + 6]
         prev_opt = torch.load(
-            open(os.path.join(train_from_model_dir, opt.exp + '.initial.config'), 'rb', encoding="utf-8")
+            open(os.path.join(train_from_model_dir, opt.exp + '.initial.config'), 'rb')
         )
         prev_opt.seed = opt.seed
         prev_opt.train_from = opt.train_from
@@ -93,7 +93,7 @@ def init_opt(description):
         opt = prev_opt
     else:
         torch.save(opt,
-                   open(os.path.join(opt.model_path, opt.exp + '.initial.config'), 'wb', encoding="utf-8")
+                   open(os.path.join(opt.model_path, opt.exp + '.initial.config'), 'wb')
                    )
         json.dump(vars(opt), open(os.path.join(opt.model_path, opt.exp + '.initial.json'), 'w', encoding="utf-8"))
 

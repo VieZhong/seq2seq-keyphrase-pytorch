@@ -555,11 +555,11 @@ def train_model(model, optimizer_ml, optimizer_rl, criterion, train_data_loader,
                     logging.info('Saving checkpoint to: %s' % os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d.error=%f' % (opt.exp, epoch, batch_i, total_batch, valid_loss) + '.model'))
                     torch.save(
                         model.state_dict(),
-                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb', encoding="utf-8")
+                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb')
                     )
                     torch.save(
                         (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_ml_history_losses, train_rl_history_losses, valid_history_losses, test_history_losses),
-                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb', encoding="utf-8")
+                        open(os.path.join(opt.model_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb')
                     )
 
                 if stop_increasing >= opt.early_stop_tolerance:
@@ -713,7 +713,7 @@ def init_model(opt):
         # dump the meta-model
         torch.save(
             model.state_dict(),
-            open(os.path.join(opt.train_from[: opt.train_from.find('.epoch=')], 'initial.model'), 'wb', encoding="utf-8")
+            open(os.path.join(opt.train_from[: opt.train_from.find('.epoch=')], 'initial.model'), 'wb')
         )
 
     utils.tally_parameters(model)

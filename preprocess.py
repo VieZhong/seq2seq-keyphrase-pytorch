@@ -78,9 +78,9 @@ def main():
 
     print("Dumping dict to disk")
     opt.vocab_path = os.path.join(opt.subset_output_path, opt.dataset_name + '.vocab.pt')
-    torch.save([word2id, id2word, vocab], open(opt.vocab_path, 'wb', encoding="utf-8"))
+    torch.save([word2id, id2word, vocab], open(opt.vocab_path, 'wb'))
     opt.vocab_path = os.path.join(opt.output_path, opt.dataset_name + '.vocab.pt')
-    torch.save([word2id, id2word, vocab], open(opt.vocab_path, 'wb', encoding="utf-8"))
+    torch.save([word2id, id2word, vocab], open(opt.vocab_path, 'wb'))
 
 
     print("Exporting a small dataset to %s (for debugging), "

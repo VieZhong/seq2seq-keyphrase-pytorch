@@ -320,11 +320,11 @@ def train_model(model, optimizer, criterion, train_data_loader, valid_data_loade
                     logging.info('Saving checkpoint to: %s' % os.path.join(opt.save_path, '%s.epoch=%d.batch=%d.total_batch=%d.error=%f' % (opt.exp, epoch, batch_i, total_batch, valid_loss) + '.model'))
                     torch.save(
                         model.state_dict(),
-                        open(os.path.join(opt.save_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb', encoding="utf-8")
+                        open(os.path.join(opt.save_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.model'), 'wb')
                     )
                     torch.save(
                         (epoch, total_batch, best_loss, stop_increasing, checkpoint_names, train_history_losses, valid_history_losses, test_history_losses),
-                        open(os.path.join(opt.save_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb', encoding="utf-8")
+                        open(os.path.join(opt.save_path, '%s.epoch=%d.batch=%d.total_batch=%d' % (opt.exp, epoch, batch_i, total_batch) + '.state'), 'wb')
                     )
 
                 if stop_increasing >= opt.early_stop_tolerance:
