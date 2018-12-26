@@ -42,10 +42,13 @@ class AttentionExample(nn.Module):
 
         if self.method == 'general':
             self.attn = nn.Linear(self.hidden_size, hidden_size)
+            self.attn.cuda()
 
         elif self.method == 'concat':
             self.attn = nn.Linear(self.hidden_size * 2, hidden_size)
+            self.attn.cuda()
             self.other = nn.Parameter(torch.FloatTensor(1, hidden_size))
+            self.other.cuda()
 
     def forward(self, hidden, encoder_outputs):
         seq_len = len(encoder_outputs)
