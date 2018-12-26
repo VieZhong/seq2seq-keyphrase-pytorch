@@ -102,10 +102,13 @@ class Attention(nn.Module):
 
         if self.method == 'dot':
             self.linear_out = nn.Linear(2 * trg_dim, trg_dim, bias=False)  # the W_c in Eq. 5 Luong et al. 2016 [Effective Approaches to Attention-based Neural Machine Translation]
+            self.linear_out.cuda()
         else:
             self.linear_out = nn.Linear(enc_dim + trg_dim, trg_dim, bias=False)  # the W_c in Eq. 5 Luong et al. 2016 [Effective Approaches to Attention-based Neural Machine Translation]
+            self.linear_out.cuda()
 
         self.tanh = nn.Tanh()
+        self.tanh.cuda()
 
     def score(self, hiddens, encoder_outputs, encoder_mask=None):
         '''
